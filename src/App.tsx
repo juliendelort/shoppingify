@@ -3,8 +3,7 @@ import IconButton from './components/IconButton';
 import styled from 'styled-components';
 import Login from './screens/Login';
 import Firebase from 'firebase/app';
-
-declare var firebase: any;
+import * as firebase from 'firebase';
 
 const AppContainer = styled.div`
   display: flex;
@@ -45,7 +44,7 @@ const Loading = styled.p`
 `;
 
 function App() {
-  const [currentUser, setCurrentUser] = React.useState<Firebase.User>();
+  const [currentUser, setCurrentUser] = React.useState<Firebase.User | null>();
 
 
   const handleSignout = () => {
@@ -53,7 +52,7 @@ function App() {
   }
 
   React.useEffect(() => {
-    firebase.auth().onAuthStateChanged((user: Firebase.User) => setCurrentUser(user));
+    firebase.auth().onAuthStateChanged((user: Firebase.User | null) => setCurrentUser(user));
   }, []);
 
   if (currentUser === undefined) {
