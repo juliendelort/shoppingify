@@ -1,6 +1,9 @@
 import * as firebase from 'firebase';
 import * as firebaseui from 'firebaseui';
 
+// Required for side-effects
+require("firebase/firestore")
+
 const firebaseConfig = {
     apiKey: "AIzaSyBqentZV9dfBYqROdnhu8tdn7TpnZYkNBE",
     authDomain: "shoppingify-bbf33.firebaseapp.com",
@@ -17,5 +20,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
+// Auth UI
 export const firebaseAuthUI = new firebaseui.auth.AuthUI(firebase.auth());
+
+// Firestore
+export const firestoreDB = firebase.firestore();
+
+
 export default firebase;

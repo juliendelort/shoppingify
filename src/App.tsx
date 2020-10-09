@@ -2,8 +2,9 @@ import React from 'react';
 import IconButton from './components/IconButton';
 import styled from 'styled-components';
 import Login from './screens/Login';
-import Firebase from 'firebase/app';
-import firebase from 'firebase';
+
+import Items from './screens/Items';
+import { useCurrentUser } from './firebase/data';
 
 const AppContainer = styled.div`
   display: flex;
@@ -43,17 +44,9 @@ const Loading = styled.p`
     top: 50%;
 `;
 
+
 function App() {
-  const [currentUser, setCurrentUser] = React.useState<Firebase.User | null>();
-
-
-  const handleSignout = () => {
-    firebase.auth().signOut();
-  }
-
-  React.useEffect(() => {
-    firebase.auth().onAuthStateChanged((user: Firebase.User | null) => setCurrentUser(user));
-  }, []);
+  const currentUser = useCurrentUser();
 
   if (currentUser === undefined) {
     return (
@@ -66,14 +59,14 @@ function App() {
     <AppContainer>
       <LeftBar>
         <LeftBarButtons>
-          <IconButton src='format_list_bulleted-24px.svg' alt='lists' />
+          <IconButton src='format_list_bulleted-24px.svg' alt='items' />
           <IconButton src='replay-24px.svg' alt='history' />
 
           <IconButton src='insert_chart_outlined-24px.svg' alt='statistics' />
         </LeftBarButtons>
       </LeftBar>
       <TabContent>
-        <button onClick={handleSignout}>Sign out</button>
+        <Items />
       </TabContent>
     </AppContainer>
   ) : (
