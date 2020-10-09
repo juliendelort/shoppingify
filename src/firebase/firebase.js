@@ -1,6 +1,7 @@
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-var firebaseConfig = {
+import * as firebase from 'firebase';
+import * as firebaseui from 'firebaseui';
+
+const firebaseConfig = {
     apiKey: "AIzaSyBqentZV9dfBYqROdnhu8tdn7TpnZYkNBE",
     authDomain: "shoppingify-bbf33.firebaseapp.com",
     databaseURL: "https://shoppingify-bbf33.firebaseio.com",
@@ -16,5 +17,5 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-var fbui = new firebaseui.auth.AuthUI(firebase.auth());
-
+export const firebaseAuthUI = new firebaseui.auth.AuthUI(firebase.auth());
+export default firebase;

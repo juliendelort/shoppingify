@@ -3,7 +3,7 @@ import IconButton from './components/IconButton';
 import styled from 'styled-components';
 import Login from './screens/Login';
 import Firebase from 'firebase/app';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 const AppContainer = styled.div`
   display: flex;
