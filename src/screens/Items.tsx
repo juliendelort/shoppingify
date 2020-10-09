@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { map } from 'lodash';
 import { useItems } from '../firebase/data';
+import { RouteComponentProps } from '@reach/router';
 
 const ItemElem = styled.div`
 
 `;
-const Items = () => {
+const Items = (props: RouteComponentProps) => {
     const items = useItems();
 
     return (

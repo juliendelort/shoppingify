@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import firebase from 'firebase';
-import { firebaseAuthUI } from '../firebase/firebase';
+import { useLoginUI } from '../firebase/data';
 
 
 const Title = styled.h1`
@@ -9,13 +8,7 @@ const Title = styled.h1`
 `;
 
 const Login = () => {
-    React.useEffect(() => {
-        firebaseAuthUI.start('#firebaseui-auth-container', {
-            signInOptions: [
-                firebase.auth.GoogleAuthProvider.PROVIDER_ID
-            ]
-        });
-    }, []);
+    useLoginUI('#firebaseui-auth-container');
 
     return (
         <>

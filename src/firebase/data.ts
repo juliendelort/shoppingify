@@ -2,7 +2,18 @@ import React from 'react';
 import Firebase from 'firebase/app';
 import firebase from 'firebase';
 import { Item } from '../model/items';
-import { firestoreDB } from './firebase';
+import { firebaseAuthUI, firestoreDB } from './firebase';
+
+
+export const useLoginUI = (id: string) => {
+    React.useEffect(() => {
+        firebaseAuthUI.start(id, {
+            signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID
+            ]
+        });
+    }, []);
+}
 
 export const useCurrentUser = () => {
     const [currentUser, setCurrentUser] = React.useState<Firebase.User | null>();
@@ -16,11 +27,12 @@ export const useCurrentUser = () => {
 
 export const useItems: () => Item[] = () => {
     const [items, setItems] = React.useState<Item[]>([]);
+    const currentUser = useCurrentUser();
 
     React.useEffect(() => {
 
         const setupListener = async () => {
-            firestoreDB.collection('items').onSnapshot(function (snapshot) {
+            firestoreDB.collection('items').where('userid', '==', currentUser?.uid).onSnapshot(function (snapshot) {
                 const items: Item[] = [];
                 snapshot.forEach((i) => {
                     items.push({
@@ -28,15 +40,19 @@ export const useItems: () => Item[] = () => {
                         name: i.data().name,
                         note: i.data().note,
                         category: i.data().category,
-                        imgurl: i.data().imgurl
+                        imgurl: i.data().imgurl,
+                        userid: i.data().userid
                     })
                 })
                 setItems(items);
             });
         };
 
-        setupListener();
-    }, []);
+        if (currentUser) {
+            setupListener();
+
+        }
+    }, [currentUser]);
 
     return items;
 }

@@ -5,6 +5,7 @@ import Login from './screens/Login';
 
 import Items from './screens/Items';
 import { useCurrentUser } from './firebase/data';
+import { Router, Link, RouteComponentProps } from "@reach/router"
 
 const AppContainer = styled.div`
   display: flex;
@@ -44,9 +45,15 @@ const Loading = styled.p`
     top: 50%;
 `;
 
+// Temporary
+const Lists = (props: RouteComponentProps) => <div>Lists</div>
+const Stats = (props: RouteComponentProps) => <div>Statistics</div>
+
 
 function App() {
   const currentUser = useCurrentUser();
+
+  console.log({ currentUser });
 
   if (currentUser === undefined) {
     return (
@@ -59,14 +66,17 @@ function App() {
     <AppContainer>
       <LeftBar>
         <LeftBarButtons>
-          <IconButton src='format_list_bulleted-24px.svg' alt='items' />
-          <IconButton src='replay-24px.svg' alt='history' />
-
-          <IconButton src='insert_chart_outlined-24px.svg' alt='statistics' />
+          <Link to='/'><IconButton src='format_list_bulleted-24px.svg' alt='items' /></Link>
+          <Link to='/lists'><IconButton src='replay-24px.svg' alt='history' /></Link>
+          <Link to='/stats'><IconButton src='insert_chart_outlined-24px.svg' alt='statistics' /></Link>
         </LeftBarButtons>
       </LeftBar>
       <TabContent>
-        <Items />
+        <Router>
+          <Items path='/' />
+          <Lists path="lists" />
+          <Stats path="stats" />
+        </Router>
       </TabContent>
     </AppContainer>
   ) : (

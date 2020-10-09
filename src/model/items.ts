@@ -4,4 +4,5 @@ export interface Item {
     note?: string;
     imgurl?: string;
     category: string;
+    userid: string;
 }
