@@ -7,7 +7,7 @@ const Title = styled.h1`
     text-align: center;
 `;
 
-const Login = () => {
+const Login: React.FunctionComponent = () => {
     useLoginUI('#firebaseui-auth-container');
 
     return (

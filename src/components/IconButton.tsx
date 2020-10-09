@@ -11,12 +11,13 @@ const StyledImg = styled.img`
 interface IconButtonProps {
     src: string;
     alt: string;
+    className?: string;
 }
 
-const IconButton = (props: IconButtonProps) => {
-    const { src: iconUrl, alt } = props;
+const IconButton: React.FunctionComponent<IconButtonProps> = (props) => {
+    const { src, alt, className } = props;
 
-    return <StyledImg src={iconUrl} alt={alt} />
+    return <StyledImg src={src} alt={alt} className={className} />
 }
 
 export default IconButton;
