@@ -8,9 +8,12 @@ import { Router, RouteComponentProps } from '@reach/router';
 import ReactTooltip from 'react-tooltip';
 import NavigationLink from './components/NavigationLink';
 import { ifNotMobile } from './utils/styles';
+import RightBar from './components/RightBar';
 
 const MOBILE_LEFT_BAR_WIDTH = '65px';
 const DESKTOP_LEFT_BAR_WIDTH = '95px';
+
+const DESKTOP_RIGHT_BAR_WIDTH = '390px';
 
 const AppContainer = styled.div`
   display: flex;
@@ -44,6 +47,9 @@ const TabContent = styled.div`
 
   margin-left: ${MOBILE_LEFT_BAR_WIDTH};
   ${ifNotMobile(`margin-left: ${DESKTOP_LEFT_BAR_WIDTH};`)}
+
+  margin-right: ${DESKTOP_RIGHT_BAR_WIDTH};
+  overflow: hidden;
 `;
 
 const Loading = styled.p`
@@ -52,6 +58,17 @@ const Loading = styled.p`
   position: fixed;
   left: 50%;
   top: 50%;
+`;
+
+const RightBarWrapper = styled.div`
+  position: fixed;
+  right: 0;
+  width: ${DESKTOP_RIGHT_BAR_WIDTH};
+  height: 100%;
+  background: #FFF0DE;
+  padding-left: 50px;
+  padding-right: 30px;
+  box-sizing: border-box;
 `;
 
 
@@ -86,6 +103,9 @@ function App() {
           <Stats path='stats' />
         </Router>
       </TabContent>
+      <RightBarWrapper>
+        <RightBar />
+      </RightBarWrapper>
       <ReactTooltip place='top' type='dark' effect='solid' />
     </AppContainer>
   ) : (

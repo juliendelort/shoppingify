@@ -12,7 +12,7 @@ export const useLoginUI = (id: string) => {
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID
             ]
         });
-    }, []);
+    }, [id]);
 }
 
 export const useCurrentUser = () => {
@@ -55,4 +55,31 @@ export const useItems: () => Item[] = () => {
     }, [currentUser]);
 
     return items;
+}
+
+export const useAddItem = () => {
+    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState<string | null>(null);
+
+    const currentUser = useCurrentUser();
+
+    const addItem = async (item: Partial<Item>) => {
+        setLoading(true);
+        setError(null);
+        try {
+            await firestoreDB.collection('items').add({
+                ...item,
+                userid: currentUser?.uid
+            })
+
+        } catch (e) {
+            const error = e as Firebase.FirebaseError;
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { addItem, loading, error };
+
 }

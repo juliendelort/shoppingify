@@ -28,11 +28,12 @@ const SectionTitle = styled.p`
     ${ifNotMobile(`margin-top: 60px;`)}
     margin-bottom: 18px;
     font-size: 18px;
+    grid-column: 1 / -1;
 `;
 
-const SectionContent = styled.div`
+const Section = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fill,minmax(150px, max-content));
     grid-gap: 45px 20px;
 
     ${ifMobile(`
@@ -49,6 +50,12 @@ const ItemElem = styled.div`
     align-items: center;
     justify-content: space-between;
     box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+`;
+
+const ItemName = styled.span`
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const GrayIconButton = styled(IconButton)`
@@ -69,14 +76,15 @@ const Items: React.FunctionComponent<RouteComponentProps> = (props) => {
 
             {map(itemsByCategory, (items: Item[], category: string) => (
                 <React.Fragment key={category}>
-                    <SectionTitle>{category}</SectionTitle>
-                    <SectionContent>
+
+                    <Section>
+                        <SectionTitle>{category}</SectionTitle>
                         {map(items, (item) => (
                             <ItemElem key={item.id}>
-                                {item.name}
+                                <ItemName>{item.name}</ItemName>
                                 <GrayIconButton src='add-24px.svg' alt='Add' />
                             </ItemElem>))}
-                    </SectionContent>
+                    </Section>
                 </React.Fragment>
             ))}
         </ItemScreen>
