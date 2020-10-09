@@ -1,6 +1,6 @@
 export const YELLOW = '#F9A109';
 
-const MOBILE_BREAKPOINT = '1024px';
+const MOBILE_BREAKPOINT = '768px';
 
 export const ifNotMobile = (str: string) => `
     @media (min-width: ${MOBILE_BREAKPOINT}) {
