@@ -5,7 +5,7 @@ import { useItems } from '../firebase/data';
 import { RouteComponentProps } from '@reach/router';
 import { ifNotMobile, ifMobile, YELLOW } from '../utils/styles';
 import IconButton from '../components/IconButton';
-import { Item } from '../model/items';
+import { Item } from '../model/item';
 
 
 const ItemScreen = styled.div`
@@ -37,7 +37,6 @@ const Section = styled.div`
     grid-gap: 45px 20px;
 
     ${ifMobile(`
-        grid-template-columns: 1fr 1fr;
         grid-gap: 24px 9px;
     `)}
 
@@ -64,29 +63,40 @@ const GrayIconButton = styled(IconButton)`
     height: 16px;
 `;
 
+const Loading = styled.p`
+    text-align: center;
+    margin-top: 40px;
+`;
+
+const Error = styled.p`
+    margin-top: 40px;
+    color: red;
+`;
+
 
 const Items: React.FunctionComponent<RouteComponentProps> = (props) => {
-    const items = useItems();
+    const { items, loading, error } = useItems();
 
     const itemsByCategory = groupBy(items, ((i: Item) => i.category));
 
     return (
         <ItemScreen>
             <Title><span style={{ color: YELLOW }} >Shoppingify</span> allows you to take your shopping list wherever you go</Title>
+            {error && <Error>error</Error>}
+            {loading ? <Loading>Loading...</Loading> :
+                map(itemsByCategory, (items: Item[], category: string) => (
+                    <React.Fragment key={category}>
 
-            {map(itemsByCategory, (items: Item[], category: string) => (
-                <React.Fragment key={category}>
-
-                    <Section>
-                        <SectionTitle>{category}</SectionTitle>
-                        {map(items, (item) => (
-                            <ItemElem key={item.id}>
-                                <ItemName>{item.name}</ItemName>
-                                <GrayIconButton src='add-24px.svg' alt='Add' />
-                            </ItemElem>))}
-                    </Section>
-                </React.Fragment>
-            ))}
+                        <Section>
+                            <SectionTitle>{category}</SectionTitle>
+                            {map(items, (item) => (
+                                <ItemElem key={item.id}>
+                                    <ItemName>{item.name}</ItemName>
+                                    <GrayIconButton src='add-24px.svg' alt='Add' />
+                                </ItemElem>))}
+                        </Section>
+                    </React.Fragment>
+                ))}
         </ItemScreen>
     );
 }

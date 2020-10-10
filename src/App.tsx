@@ -7,7 +7,7 @@ import { useCurrentUser } from './firebase/data';
 import { Router, RouteComponentProps } from '@reach/router';
 import ReactTooltip from 'react-tooltip';
 import NavigationLink from './components/NavigationLink';
-import { ifNotMobile } from './utils/styles';
+import { ifMobile, ifNotMobile } from './utils/styles';
 import RightBar from './components/RightBar';
 
 const MOBILE_LEFT_BAR_WIDTH = '65px';
@@ -46,9 +46,12 @@ const TabContent = styled.div`
   height: 100%;
 
   margin-left: ${MOBILE_LEFT_BAR_WIDTH};
-  ${ifNotMobile(`margin-left: ${DESKTOP_LEFT_BAR_WIDTH};`)}
+  ${ifNotMobile(`
+      margin-left: ${DESKTOP_LEFT_BAR_WIDTH};
+      margin-right: ${DESKTOP_RIGHT_BAR_WIDTH};
+  `)}
 
-  margin-right: ${DESKTOP_RIGHT_BAR_WIDTH};
+  
   overflow: hidden;
 `;
 
@@ -69,6 +72,8 @@ const RightBarWrapper = styled.div`
   padding-left: 50px;
   padding-right: 30px;
   box-sizing: border-box;
+
+  ${ifMobile(`display: none;`)}
 `;
 
 

@@ -1,19 +1,27 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useAddItem } from '../firebase/data';
-import { Item } from '../model/items';
+import { Item } from '../model/item';
 import styled from 'styled-components';
+
+
+export interface AddItemProps {
+    onDone: () => void;
+}
 
 const Title = styled.h1`
     font-size: 24px;
 `;
 
-const AddItem: React.FunctionComponent = () => {
+const AddItem: React.FunctionComponent<AddItemProps> = ({ onDone }) => {
     const { addItem, loading, error } = useAddItem();
     const { register, handleSubmit, errors } = useForm();
 
-    const onSubmit = (data: Partial<Item>) => addItem(data);
-
+    const onSubmit = (data: Partial<Item>) => {
+        addItem(data);
+        onDone();
+    }
+    const handleCancel = () => onDone();
     return (
         <>
             {error && <p>{error}</p>}
@@ -34,7 +42,7 @@ const AddItem: React.FunctionComponent = () => {
                 <input name='category' type='text' placeholder='Enter a category' ref={register({ required: true })} />
                 {errors.category && <span>This field is required</span>}
 
-                <button>cancel</button>
+                <button onClick={handleCancel}>cancel</button>
                 <input type='submit' value='Save' />
 
             </form>
