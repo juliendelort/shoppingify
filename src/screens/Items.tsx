@@ -28,18 +28,17 @@ const Title = styled.h1`
     ${ifMobile(`display: none;`)}
 `;
 
-const SectionTitle = styled.p`
-    margin-top: 40px;
-    ${ifNotMobile(`margin-top: 60px;`)}
-    margin-bottom: 18px;
+const SectionTitle = styled.span`
+    margin-top: 20px;
+    ${ifNotMobile(`margin-top: 30px;`)}
     font-size: 18px;
     grid-column: 1 / -1;
 `;
 
 const Section = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(150px, max-content));
-    grid-gap: 45px 20px;
+    grid-template-columns: repeat(auto-fill,minmax(min-content, 200px));
+    grid-gap: 45px 18px;
 
     ${ifMobile(`
         grid-gap: 24px 9px;
@@ -96,11 +95,12 @@ const Items: React.FunctionComponent<RouteComponentProps & ItemsProps> = ({ curr
         <ItemScreen>
             <Title><span style={{ color: YELLOW }} >Shoppingify</span> allows you to take your shopping list wherever you go</Title>
             {fetchItemsError && <Error>error</Error>}
-            {fetchingItems ? <Loading>Loading...</Loading> :
-                map(itemsByCategory, (items: Item[], category: string) => (
-                    <React.Fragment key={category}>
+            {fetchingItems ? <Loading>Loading...</Loading> : (
+                <Section>
+                    {map(itemsByCategory, (items: Item[], category: string) => (
+                        <React.Fragment key={category}>
 
-                        <Section>
+
                             <SectionTitle>{category}</SectionTitle>
                             {map(items, (item) => (
                                 <ItemElem key={item.id}>
@@ -109,9 +109,11 @@ const Items: React.FunctionComponent<RouteComponentProps & ItemsProps> = ({ curr
                                         <GrayIconButton src='add-24px.svg' alt='Add' onClick={handleAddClicked(item.id)} />
                                     )}
                                 </ItemElem>))}
-                        </Section>
-                    </React.Fragment>
-                ))}
+
+                        </React.Fragment>
+
+                    ))}
+                </Section>)}
         </ItemScreen>
     );
 }

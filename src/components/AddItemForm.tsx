@@ -13,7 +13,7 @@ const Title = styled.h1`
     font-size: 24px;
 `;
 
-const AddItem: React.FunctionComponent<AddItemProps> = ({ onDone }) => {
+const AddItemForm: React.FunctionComponent<AddItemProps> = ({ onDone }) => {
     const { addItem, loading, error } = useAddItem();
     const { register, handleSubmit, errors } = useForm();
 
@@ -50,4 +50,4 @@ const AddItem: React.FunctionComponent<AddItemProps> = ({ onDone }) => {
     );
 };
 
-export default AddItem;
+export default AddItemForm;

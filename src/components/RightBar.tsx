@@ -3,7 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Item } from '../model/item';
 import { List } from '../model/list';
-import AddItem from './AddItem';
+import AddItemButton from './AddItemButton';
+import AddItemForm from './AddItemForm';
 
 export interface RightBarProps {
     currentList?: List;
@@ -32,9 +33,9 @@ const RightBar: React.FunctionComponent<RightBarProps> = ({ currentList, loading
     const handleDoneAddItem = () => setAddingItem(false);
     return (
         <>
-            <button onClick={handleAddItem}>Add item</button>
+            {!addingItem && <AddItemButton onAddItem={handleAddItem} />}
             {
-                addingItem ? (<AddItem onDone={handleDoneAddItem} />) : (
+                addingItem ? (<AddItemForm onDone={handleDoneAddItem} />) : (
                     <CurrentList>
                         {error && <Error>error</Error>}
                         {loading ? <Loading>Loading...</Loading> : (
