@@ -154,6 +154,25 @@ export const useAddItem = () => {
     return { addItem, loading, error };
 }
 
-export const useActiveList = () => {
+export const useAddToList = () => {
+    const [itemBeingAdded, setItemBeingAdded] = React.useState<string | null>(null);
+    const [error, setError] = React.useState<string | null>(null);
+
+    const addToList = async (listId: string, itemId: string) => {
+        setItemBeingAdded(itemId);
+        setError(null);
+        try {
+            await firestoreDB.collection('lists').doc(listId).update({
+                items: firebase.firestore.FieldValue.arrayUnion(firestoreDB.collection('items').doc(itemId))
+            });
+        } catch (e) {
+            const error = e as Firebase.FirebaseError;
+            setError(error.message);
+        } finally {
+            setItemBeingAdded(null);
+        }
+    };
+
+    return { addToList, itemBeingAdded, error };
 
 }

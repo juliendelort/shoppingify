@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Login from './screens/Login';
 
 import Items from './screens/Items';
-import { useCurrentUser } from './firebase/data';
+import { useCurrentList, useCurrentUser } from './firebase/data';
 import { Router, RouteComponentProps } from '@reach/router';
 import ReactTooltip from 'react-tooltip';
 import NavigationLink from './components/NavigationLink';
@@ -84,6 +84,7 @@ const Stats = (props: RouteComponentProps) => <div>Statistics</div>
 
 function App() {
   const currentUser = useCurrentUser();
+  const { currentList, loading, error } = useCurrentList();
 
   if (currentUser === undefined) {
     return (
@@ -103,13 +104,13 @@ function App() {
       </LeftBar>
       <TabContent>
         <Router>
-          <Items path='/' />
+          <Items path='/' currentListId={currentList?.id} />
           <Lists path='history' />
           <Stats path='stats' />
         </Router>
       </TabContent>
       <RightBarWrapper>
-        <RightBar />
+        <RightBar {...{ currentList, loading, error }} />
       </RightBarWrapper>
       <ReactTooltip place='top' type='dark' effect='solid' />
     </AppContainer>

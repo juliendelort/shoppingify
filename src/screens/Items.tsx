@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { groupBy, map } from 'lodash';
-import { useItems } from '../firebase/data';
+import { useAddToList, useItems } from '../firebase/data';
 import { RouteComponentProps } from '@reach/router';
 import { ifNotMobile, ifMobile, YELLOW } from '../utils/styles';
 import IconButton from '../components/IconButton';
 import { Item } from '../model/item';
+import Spinner from '../components/Spinner';
+
+export interface ItemsProps {
+    currentListId?: string;
+}
 
 
 const ItemScreen = styled.div`
@@ -73,17 +78,23 @@ const Error = styled.p`
     color: red;
 `;
 
+const StyledSpinner = styled(Spinner)`
+    opacity: 0.8;
+`;
 
-const Items: React.FunctionComponent<RouteComponentProps> = (props) => {
-    const { items, loading, error } = useItems();
+
+const Items: React.FunctionComponent<RouteComponentProps & ItemsProps> = ({ currentListId }) => {
+    const { items, loading: fetchingItems, error: fetchItemsError } = useItems();
+    const { addToList, itemBeingAdded, error: addItemError } = useAddToList();
 
     const itemsByCategory = groupBy(items, ((i: Item) => i.category));
+    const handleAddClicked = (itemId: string) => () => currentListId && addToList(currentListId, itemId);
 
     return (
         <ItemScreen>
             <Title><span style={{ color: YELLOW }} >Shoppingify</span> allows you to take your shopping list wherever you go</Title>
-            {error && <Error>error</Error>}
-            {loading ? <Loading>Loading...</Loading> :
+            {fetchItemsError && <Error>error</Error>}
+            {fetchingItems ? <Loading>Loading...</Loading> :
                 map(itemsByCategory, (items: Item[], category: string) => (
                     <React.Fragment key={category}>
 
@@ -92,7 +103,9 @@ const Items: React.FunctionComponent<RouteComponentProps> = (props) => {
                             {map(items, (item) => (
                                 <ItemElem key={item.id}>
                                     <ItemName>{item.name}</ItemName>
-                                    <GrayIconButton src='add-24px.svg' alt='Add' />
+                                    {itemBeingAdded === item.id ? <StyledSpinner /> : (
+                                        <GrayIconButton src='add-24px.svg' alt='Add' onClick={handleAddClicked(item.id)} />
+                                    )}
                                 </ItemElem>))}
                         </Section>
                     </React.Fragment>

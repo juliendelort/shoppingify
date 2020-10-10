@@ -1,11 +1,15 @@
 import { map } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
-import { useCurrentList } from '../firebase/data';
 import { Item } from '../model/item';
+import { List } from '../model/list';
 import AddItem from './AddItem';
 
-
+export interface RightBarProps {
+    currentList?: List;
+    loading: boolean;
+    error: string | null;
+}
 const CurrentList = styled.div`
 
 `;
@@ -21,12 +25,9 @@ const Error = styled.p`
     color: red;
 `;
 
-const RightBar: React.FunctionComponent = () => {
+const RightBar: React.FunctionComponent<RightBarProps> = ({ currentList, loading, error }) => {
     const [addingItem, setAddingItem] = React.useState(false);
 
-    const { currentList, loading, error } = useCurrentList();
-
-    console.log({ currentList, loading, error })
     const handleAddItem = () => setAddingItem(true);
     const handleDoneAddItem = () => setAddingItem(false);
     return (
