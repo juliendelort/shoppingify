@@ -5,7 +5,7 @@ export interface SpinnerProps {
 }
 
 const Spinner: React.FunctionComponent<SpinnerProps> = ({ className }) => (
-    <img src='ajax-loader.gif' alt='loading' className={className} />
+    <img src='tail-spin.svg' alt='loading' className={className} />
 );
 
 export default Spinner;

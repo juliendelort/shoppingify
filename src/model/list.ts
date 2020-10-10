@@ -4,5 +4,5 @@ export interface List {
     id: string;
     name: string;
     status: 'editing' | 'completing' | 'completed' | 'cancelled';
-    items: Item[];
+    items: { [itemId: string]: { item: Item, count: number } };
 }

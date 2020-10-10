@@ -80,6 +80,8 @@ const Error = styled.p`
 
 const StyledSpinner = styled(Spinner)`
     opacity: 0.8;
+    width: 18px;
+    height: 18px;
 `;
 
 

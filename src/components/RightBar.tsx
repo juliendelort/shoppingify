@@ -39,8 +39,8 @@ const RightBar: React.FunctionComponent<RightBarProps> = ({ currentList, loading
                         {error && <Error>error</Error>}
                         {loading ? <Loading>Loading...</Loading> : (
                             <ItemList>
-                                {map(currentList?.items, (item: Item) => (
-                                    <p key={item.id}>{item.name}</p>
+                                {map(currentList?.items, ({ item, count }) => (
+                                    <p key={item.id}>{item.name} : {count}</p>
                                 ))}
                             </ItemList>)}
                     </CurrentList>

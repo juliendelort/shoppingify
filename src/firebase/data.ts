@@ -44,8 +44,15 @@ const listFromFirebase = async (l: DocumentSnapshot) => {
         id: l.id,
         name: l.data().name,
         status: l.data().status,
-        items: await Promise.all(map(l.data().items, async (i) => itemFromFirebase(await i.get())))
+        items: {}
     };
+
+    await Promise.all(map(l.data().items, async ({ item, count }, itemId) => {
+        list.items[itemId] = {
+            item: itemFromFirebase(await item.get()),
+            count
+        }
+    }));
 
     return list;
 }
@@ -163,7 +170,8 @@ export const useAddToList = () => {
         setError(null);
         try {
             await firestoreDB.collection('lists').doc(listId).update({
-                items: firebase.firestore.FieldValue.arrayUnion(firestoreDB.collection('items').doc(itemId))
+                [`items.${itemId}.item`]: firestoreDB.collection('items').doc(itemId),
+                [`items.${itemId}.count`]: firebase.firestore.FieldValue.increment(1)
             });
         } catch (e) {
             const error = e as Firebase.FirebaseError;
