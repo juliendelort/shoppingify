@@ -1,9 +1,8 @@
-import { reduce, size } from 'lodash';
+import { reduce } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
 import { useCurrentListState } from '../context/currentList';
 import { DESKTOP_LEFT_BAR_WIDTH, ifNotMobile, MOBILE_LEFT_BAR_WIDTH, YELLOW } from '../utils/styles';
-import IconButton from './IconButton';
 import NavigationLink from './NavigationLink';
 
 export interface LeftBarProps {

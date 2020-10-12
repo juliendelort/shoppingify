@@ -2,7 +2,7 @@ import { Router, RouteComponentProps } from '@reach/router';
 import React from 'react';
 import styled from 'styled-components';
 import Items from '../screens/Items';
-import { DESKTOP_LEFT_BAR_WIDTH, DESKTOP_RIGHT_BAR_WIDTH, ifMobile, MOBILE_LEFT_BAR_WIDTH } from '../utils/styles';
+import { DESKTOP_LEFT_BAR_WIDTH, DESKTOP_RIGHT_BAR_WIDTH, ifMobile } from '../utils/styles';
 import Footer from './Footer';
 
 
