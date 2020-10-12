@@ -6,8 +6,7 @@ export interface AddItemButtonProps {
 }
 
 const Wrapper = styled.div`
-    margin: 43px 0;
-    height: 130px;
+    margin: 32px 0;
 
     background: #80485B;
     border-radius: 24px;

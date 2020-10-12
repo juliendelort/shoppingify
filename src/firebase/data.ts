@@ -4,11 +4,11 @@ import firebase from 'firebase';
 import { Item } from '../model/item';
 import { firebaseAuthUI, firestoreDB } from './firebase';
 import { List } from '../model/list';
-import { map, forEach } from 'lodash';
+import { map } from 'lodash';
 
 type DocumentSnapshot = Firebase.firestore.QueryDocumentSnapshot<Firebase.firestore.DocumentData>;
 type Snapshot = Firebase.firestore.QuerySnapshot<Firebase.firestore.DocumentData>;
-
+type Query = Firebase.firestore.Query<Firebase.firestore.DocumentData>;
 
 export const useLoginUI = (id: string) => {
     React.useEffect(() => {
@@ -58,8 +58,7 @@ const listFromFirebase = async (l: DocumentSnapshot) => {
 }
 
 
-const useUserDataQuery = <T>(query: Firebase.firestore.Query<Firebase.firestore.DocumentData>,
-    getDataFromSnapshot: (snapshot: Firebase.firestore.QuerySnapshot<Firebase.firestore.DocumentData>) => T[]) => {
+const useUserDataQuery = <T>(query: Query, getDataFromSnapshot: (snapshot: Snapshot) => T[]) => {
     const [data, setData] = React.useState<T[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
@@ -93,7 +92,7 @@ const useUserDataQuery = <T>(query: Firebase.firestore.Query<Firebase.firestore.
             setError(error.message);
             setLoading(false);
         }
-    }, [currentUser]);
+    }, [currentUser, query, getDataFromSnapshot]);
 
     return { data, loading, error };
 }
@@ -115,24 +114,33 @@ export const useItems = () => {
 
 export const useCurrentList = () => {
     const [resolvedCurrentList, setResolvedCurrentList] = React.useState<List>();
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState<string | null>(null);
+
     const query = firestoreDB.collection('lists')
         .where('status', 'in', ['editing', 'completing']);
 
-    const { loading, error } = useUserDataQuery<List>(query, (snapshot) => {
+    const { error: initialFetchError } = useUserDataQuery<List>(query, (snapshot) => {
         const docs: DocumentSnapshot[] = [];
         snapshot.forEach(async (d) => {
             docs.push(d);
         });
 
-        // We should only have one list. Transform it
+        // We should only have one list. Transform it and fetch details
         if (docs.length > 0) {
-            listFromFirebase(docs[0]).then((resolvedCurrentList: List) => setResolvedCurrentList(resolvedCurrentList))
+            listFromFirebase(docs[0])
+                .then((resolvedCurrentList: List) => setResolvedCurrentList(resolvedCurrentList))
+                .catch((e) => {
+                    const error = e as Firebase.FirebaseError;
+                    setError(error.message);
+                })
+                .finally(() => setLoading(false))
         }
         // Not used
         return [];
     });
 
-    return { currentList: resolvedCurrentList, loading, error };
+    return { currentList: resolvedCurrentList, loading: loading, error: initialFetchError || error };
 }
 
 export const useAddItem = () => {

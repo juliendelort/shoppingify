@@ -20,6 +20,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
+
 // Auth UI
 export const firebaseAuthUI = new firebaseui.auth.AuthUI(firebase.auth());
 

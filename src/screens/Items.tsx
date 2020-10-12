@@ -7,11 +7,7 @@ import { ifNotMobile, ifMobile, YELLOW } from '../utils/styles';
 import IconButton from '../components/IconButton';
 import { Item } from '../model/item';
 import Spinner from '../components/Spinner';
-
-export interface ItemsProps {
-    currentListId?: string;
-}
-
+import { useCurrentListState } from '../context/currentList';
 
 const ItemScreen = styled.div`
     padding-left: 13px;
@@ -24,7 +20,7 @@ const ItemScreen = styled.div`
 
 const Title = styled.h1`
     font-size: 26px;
-    margin-top: 40px;
+    margin-top: 32px;
     ${ifMobile(`display: none;`)}
 `;
 
@@ -84,17 +80,20 @@ const StyledSpinner = styled(Spinner)`
 `;
 
 
-const Items: React.FunctionComponent<RouteComponentProps & ItemsProps> = ({ currentListId }) => {
+const Items: React.FunctionComponent<RouteComponentProps> = () => {
     const { items, loading: fetchingItems, error: fetchItemsError } = useItems();
     const { addToList, itemBeingAdded, error: addItemError } = useAddToList();
+    const { currentList } = useCurrentListState();
 
     const itemsByCategory = groupBy(items, ((i: Item) => i.category));
-    const handleAddClicked = (itemId: string) => () => currentListId && addToList(currentListId, itemId);
+    const handleAddClicked = (itemId: string) => () => currentList?.id && addToList(currentList.id, itemId);
 
     return (
         <ItemScreen>
             <Title><span style={{ color: YELLOW }} >Shoppingify</span> allows you to take your shopping list wherever you go</Title>
-            {fetchItemsError && <Error>error</Error>}
+            {fetchItemsError && <Error>{fetchItemsError}</Error>}
+            {addItemError && <Error>{addItemError}</Error>}
+
             {fetchingItems ? <Loading>Loading...</Loading> : (
                 <Section>
                     {map(itemsByCategory, (items: Item[], category: string) => (

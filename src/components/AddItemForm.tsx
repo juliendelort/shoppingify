@@ -27,7 +27,7 @@ const AddItemForm: React.FunctionComponent<AddItemProps> = ({ onDone }) => {
             {error && <p>{error}</p>}
             {loading && <p>Loading...</p>}
             <form onSubmit={handleSubmit(onSubmit)}>
-                <h1>Add a new item</h1>
+                <Title>Add a new item</Title>
                 <label>Name</label>
                 <input name='name' type='text' placeholder='Enter a name' ref={register({ required: true })} />
                 {errors.name && <span>This field is required</span>}

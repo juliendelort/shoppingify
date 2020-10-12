@@ -1,53 +1,49 @@
-import { map } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
-import { Item } from '../model/item';
-import { List } from '../model/list';
+import { DESKTOP_RIGHT_BAR_WIDTH, ifMobile } from '../utils/styles';
 import AddItemButton from './AddItemButton';
 import AddItemForm from './AddItemForm';
+import CurrentList from './CurrentList';
 
 export interface RightBarProps {
-    currentList?: List;
-    loading: boolean;
-    error: string | null;
+    isOpen: boolean;
 }
-const CurrentList = styled.div`
 
+const Container = styled.div<{ isOpen: boolean }>`
+    position: fixed;
+    right: 0;
+    width: ${DESKTOP_RIGHT_BAR_WIDTH};
+    height: 100%;
+    background: #FFF0DE;
+    padding-left: 50px;
+    padding-right: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    ${(props: { isOpen: boolean }) => ifMobile(`margin-right:  ${props.isOpen ? 0 : `-${DESKTOP_RIGHT_BAR_WIDTH}`};`)}
+    transition: margin-right 0.2s ease;
 `;
-const ItemList = styled.div`
-`;
 
 
-const Loading = styled.p`
-    text-align: center;
-`;
-
-const Error = styled.p`
-    color: red;
-`;
-
-const RightBar: React.FunctionComponent<RightBarProps> = ({ currentList, loading, error }) => {
+const RightBar: React.FunctionComponent<RightBarProps> = ({ isOpen }) => {
     const [addingItem, setAddingItem] = React.useState(false);
+
+
 
     const handleAddItem = () => setAddingItem(true);
     const handleDoneAddItem = () => setAddingItem(false);
     return (
-        <>
+        <Container isOpen={isOpen}>
             {!addingItem && <AddItemButton onAddItem={handleAddItem} />}
             {
-                addingItem ? (<AddItemForm onDone={handleDoneAddItem} />) : (
-                    <CurrentList>
-                        {error && <Error>error</Error>}
-                        {loading ? <Loading>Loading...</Loading> : (
-                            <ItemList>
-                                {map(currentList?.items, ({ item, count }) => (
-                                    <p key={item.id}>{item.name} : {count}</p>
-                                ))}
-                            </ItemList>)}
-                    </CurrentList>
-                )
+                addingItem ? (
+                    <AddItemForm onDone={handleDoneAddItem} />
+                ) : (
+                        <CurrentList />
+                    )
             }
-        </>
+        </Container>
     );
 };
 
