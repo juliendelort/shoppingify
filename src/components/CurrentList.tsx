@@ -62,12 +62,12 @@ const CurrentList: React.FunctionComponent<CurrentListProps> = () => {
                     <CurrentListTitle />
                     <ItemList>
                         {map(itemsByCategory, (items, category) => (
-                            <>
-                                <CategoryTitle>{category}</CategoryTitle>
+                            <React.Fragment key={category}>
+                                <CategoryTitle >{category}</CategoryTitle>
                                 {map(items, ({ item, count }) => (
                                     <ItemWrapper key={item.id}>{item.name} : {count}</ItemWrapper>
                                 ))}
-                            </>
+                            </React.Fragment>
                         ))}
                     </ItemList>
                 </>

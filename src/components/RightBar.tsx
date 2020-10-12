@@ -29,8 +29,6 @@ const Container = styled.div<{ isOpen: boolean }>`
 const RightBar: React.FunctionComponent<RightBarProps> = ({ isOpen }) => {
     const [addingItem, setAddingItem] = React.useState(false);
 
-
-
     const handleAddItem = () => setAddingItem(true);
     const handleDoneAddItem = () => setAddingItem(false);
     return (
