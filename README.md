@@ -2,7 +2,7 @@
 
 Solution for [Shoppingify dev challenge](https://devchallenges.io/challenges/mGd5VpbO4JnzU6I9l96x)
 
-Created by **Julien Delort** ([Linkedin](https://www.linkedin.com/in/juliendelort/))
+Created by **Julien Delort** (<a href="https://www.linkedin.com/in/juliendelort/" target="_blank">Linkedin</a>)
 
 
 Live demo: https://shoppingify-bbf33.web.app/
