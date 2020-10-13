@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { DESKTOP_RIGHT_BAR_WIDTH, ifMobile } from '../utils/styles';
+import { DESKTOP_RIGHT_BAR_WIDTH, ifMobile } from '../../utils/styles';
 import AddItemButton from './AddItemButton';
 import AddItemForm from './AddItemForm';
 import CurrentList from './CurrentList';

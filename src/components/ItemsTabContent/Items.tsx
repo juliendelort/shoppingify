@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { groupBy, map } from 'lodash';
-import { ifNotMobile, ifMobile, YELLOW } from '../utils/styles';
-import { Item } from '../model/item';
-import Spinner from '../components/Spinner';
-import { useCurrentListState } from '../context/currentList';
-import AddIconButton from '../components/AddIconButton';
-import { useItemsState } from '../context/items';
-import { useAddToList } from '../firebase/dataAccess/listDataAccess';
+import { ifNotMobile, ifMobile, YELLOW } from '../../utils/styles';
+import { Item } from '../../model/item';
+import Spinner from '../Spinner';
+import { useCurrentListState } from '../../context/currentList';
+import AddIconButton from './AddIconButton';
+import { useItemsState } from '../../context/items';
+import { useAddToList } from '../../firebase/dataAccess/listDataAccess';
 
 const ItemScreen = styled.div`
     padding-left: 13px;

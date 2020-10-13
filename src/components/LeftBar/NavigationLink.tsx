@@ -1,8 +1,8 @@
 import { Match, Link } from '@reach/router';
 import React from 'react';
 import styled from 'styled-components';
-import { YELLOW } from '../utils/styles';
-import IconButton from './IconButton';
+import { YELLOW } from '../../utils/styles';
+import IconButton from '../IconButton';
 
 export interface NavigationLinkProps {
     name: string;

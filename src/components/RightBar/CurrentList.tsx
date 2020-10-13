@@ -1,7 +1,7 @@
 import { groupBy, map } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
-import { useCurrentListState } from '../context/currentList';
+import { useCurrentListState } from '../../context/currentList';
 import CurrentListItem from './CurrentListItem';
 import CurrentListTitle from './CurrentListTitle';
 

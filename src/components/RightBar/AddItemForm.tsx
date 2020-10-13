@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Item } from '../model/item';
 import styled from 'styled-components';
-import { useAddItem } from '../firebase/dataAccess/itemsDataAccess';
+import { useAddItem } from '../../firebase/dataAccess/itemsDataAccess';
+import { Item } from '../../model/item';
 
 
 export interface AddItemProps {

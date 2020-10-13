@@ -1,8 +1,8 @@
 import { isEmpty } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
-import { useCurrentListState } from '../context/currentList';
-import IconButton from './IconButton';
+import { useCurrentListState } from '../../context/currentList';
+import IconButton from '../IconButton';
 
 export interface CurrentListTitleProps {
 }

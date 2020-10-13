@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Item } from '../model/item';
-import IconButton from './IconButton';
+import { Item } from '../../model/item';
+import IconButton from '../IconButton';
 
 export interface CurrentListItemProps {
     isEditing: boolean;

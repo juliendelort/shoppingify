@@ -31,7 +31,7 @@ User stories and mocks available on [the dev challenge page](https://devchalleng
     * `screens/`: Screen level components
     * `components/`: All other components
     * `model/`: Typescript model definitions
-    * `firebase/`: Backend access. Intended to be accessed only by context modules (`context/`)
+    * `firebase/`: Backend access (data fetching/writing + transformers). Intended to be accessed only by context modules (`context/`)
     * `context/`: Local state
     * `utils/`: Misc
 *  `public/`: static resources 
