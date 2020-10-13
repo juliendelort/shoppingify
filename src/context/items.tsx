@@ -1,13 +1,18 @@
 import React from 'react';
-import { useItems } from '../firebase/data';
+import { useItems } from '../firebase/dataAccess/itemsDataAccess';
 import { Item } from '../model/item';
 
 export interface ItemsState {
     items: Item[];
+    loading: boolean;
+    error: string | null;
+
 };
 
 const initialState: ItemsState = {
-    items: []
+    items: [],
+    loading: false,
+    error: null
 };
 
 const ItemsContext = React.createContext<ItemsState>(initialState);

@@ -5,7 +5,7 @@ export interface AddItemButtonProps {
     onAddItem: () => void;
 }
 
-const Wrapper = styled.div`
+const Container = styled.div`
     margin: 32px 0;
 
     background: #80485B;
@@ -33,6 +33,7 @@ const Button = styled.button`
     border-radius: 12px;
     border: none;
     cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
 `;
 
 const Text = styled.p`
@@ -41,14 +42,15 @@ const Text = styled.p`
 `;
 
 const AddItemButton: React.FunctionComponent<AddItemButtonProps> = ({ onAddItem }) => {
-
-    return (<Wrapper>
-        <StyledImg src='source.svg' />
-        <VerticalLayout>
-            <Text>Didn't find what you need?</Text>
-            <Button onClick={onAddItem}>Add item</Button>
-        </VerticalLayout>
-    </Wrapper>);
+    return (
+        <Container>
+            <StyledImg src='source.svg' />
+            <VerticalLayout>
+                <Text>Didn't find what you need?</Text>
+                <Button onClick={onAddItem}>Add item</Button>
+            </VerticalLayout>
+        </Container>
+    );
 
 };
 

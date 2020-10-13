@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { groupBy, map } from 'lodash';
-import { useAddToList, useItems } from '../firebase/data';
 import { ifNotMobile, ifMobile, YELLOW } from '../utils/styles';
 import { Item } from '../model/item';
 import Spinner from '../components/Spinner';
 import { useCurrentListState } from '../context/currentList';
 import AddIconButton from '../components/AddIconButton';
+import { useItemsState } from '../context/items';
+import { useAddToList } from '../firebase/dataAccess/listDataAccess';
 
 const ItemScreen = styled.div`
     padding-left: 13px;
@@ -19,18 +20,19 @@ const ItemScreen = styled.div`
 
 const Title = styled.h1`
     font-size: 1.75rem;
-    margin-top: 32px;
+    margin-top: 32px 0;
+    margin-bottom: 20px;
     ${ifMobile(`display: none;`)}
 `;
 
-const SectionTitle = styled.span`
+const CategoryTitle = styled.span`
     margin-top: 20px;
     ${ifNotMobile(`margin-top: 30px;`)}
     font-size: 1.25rem;
     grid-column: 1 / -1;
 `;
 
-const Section = styled.div`
+const Grid = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(min-content, 200px));
     grid-gap: 45px 18px;
@@ -74,7 +76,7 @@ const StyledSpinner = styled(Spinner)`
 
 
 const Items: React.FunctionComponent = () => {
-    const { items, loading: fetchingItems, error: fetchItemsError } = useItems();
+    const { items, loading: fetchingItems, error: fetchItemsError } = useItemsState();
     const { addToList, itemBeingAdded, error: addItemError } = useAddToList();
     const { currentList } = useCurrentListState();
 
@@ -90,12 +92,10 @@ const Items: React.FunctionComponent = () => {
             {addItemError && <Error>{addItemError}</Error>}
 
             {fetchingItems ? <Loading>Loading...</Loading> : (
-                <Section>
+                <Grid>
                     {map(itemsByCategory, (items: Item[], category: string) => (
                         <React.Fragment key={category}>
-
-
-                            <SectionTitle>{category}</SectionTitle>
+                            <CategoryTitle>{category}</CategoryTitle>
                             {map(items, (item) => (
                                 <ItemElem key={item.id}>
                                     <ItemName>{item.name}</ItemName>
@@ -103,11 +103,10 @@ const Items: React.FunctionComponent = () => {
                                         <AddIconButton itemId={item.id} onClick={handleAddClicked} />
                                     )}
                                 </ItemElem>))}
-
                         </React.Fragment>
 
                     ))}
-                </Section>)}
+                </Grid>)}
         </ItemScreen>
     );
 }

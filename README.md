@@ -1,4 +1,42 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+
+Solution for [Shoppingify dev challenge](https://devchallenges.io/challenges/mGd5VpbO4JnzU6I9l96x)
+
+Created by **Julien Delort** ([Linkedin](https://www.linkedin.com/in/juliendelort/))
+
+
+Live demo: https://shoppingify-bbf33.web.app/
+
+User stories and mocks available on [the dev challenge page](https://devchallenges.io/challenges/mGd5VpbO4JnzU6I9l96x)
+</div>
+
+
+## Stack
+
+* Front end
+    * [React](https://reactjs.org/) (bootstrapped with [Create React App](https://github.com/facebook/create-react-app))
+    * [Reach router](https://github.com/reach/router)
+    * [Typescript](https://www.typescriptlang.org/)
+    * [Styled Components](https://styled-components.com/)
+    * [lodash](https://lodash.com/)
+    * NO redux: State is managed by React. See why [here](https://kentcdodds.com/blog/application-state-management-with-react)
+* Back end
+    * [Firestore](https://firebase.google.com/products/firestore)
+    * [Firebase Hosting](https://firebase.google.com/products/hosting)
+    * [Firebase Authentication](https://firebase.google.com/products/auth)
+
+## Folders
+
+* `src/`
+    * `screens/`: Screen level components
+    * `components/`: All other components
+    * `model/`: Typescript model definitions
+    * `firebase/`: Backend access. Intended to be accessed only by context modules (`context/`)
+    * `context/`: Local state
+    * `utils/`: Misc
+*  `public/`: static resources 
+
+Local state is managed inside `context/` through [custom hooks](https://reactjs.org/docs/hooks-custom.html#extracting-a-custom-hook).
 
 ## Available Scripts
 

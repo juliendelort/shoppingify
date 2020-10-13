@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCurrentList } from '../firebase/data';
+import { useCurrentList } from '../firebase/dataAccess/listDataAccess';
 import { List } from '../model/list';
 
 export interface CurrentListState {

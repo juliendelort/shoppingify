@@ -29,18 +29,13 @@ const Container = styled.div<{ isOpen: boolean }>`
 const RightBar: React.FunctionComponent<RightBarProps> = ({ isOpen }) => {
     const [addingItem, setAddingItem] = React.useState(false);
 
-    const handleAddItem = () => setAddingItem(true);
-    const handleDoneAddItem = () => setAddingItem(false);
+    const handleAddItem = React.useCallback(() => setAddingItem(true), [setAddingItem]);
+    const handleDoneAddItem = React.useCallback(() => setAddingItem(false), [setAddingItem]);
     return (
         <Container isOpen={isOpen}>
             {!addingItem && <AddItemButton onAddItem={handleAddItem} />}
-            {
-                addingItem ? (
-                    <AddItemForm onDone={handleDoneAddItem} />
-                ) : (
-                        <CurrentList />
-                    )
-            }
+            {addingItem ? (<AddItemForm onDone={handleDoneAddItem} />) :
+                (<CurrentList />)}
         </Container>
     );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLoginUI } from '../firebase/data';
+import { useLoginUI } from '../firebase/dataAccess/userDataAccess';
 
 const Container = styled.div`
     flex: 1;

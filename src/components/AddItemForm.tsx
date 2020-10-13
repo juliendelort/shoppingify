@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useAddItem } from '../firebase/data';
 import { Item } from '../model/item';
 import styled from 'styled-components';
+import { useAddItem } from '../firebase/dataAccess/itemsDataAccess';
 
 
 export interface AddItemProps {
@@ -13,18 +13,28 @@ const Title = styled.h1`
     font-size: 1.5rem;
 `;
 
+const Error = styled.p`
+    margin-top: 40px;
+    color: red;
+`;
+
+
 const AddItemForm: React.FunctionComponent<AddItemProps> = ({ onDone }) => {
     const { addItem, loading, error } = useAddItem();
     const { register, handleSubmit, errors } = useForm();
 
-    const onSubmit = (data: Partial<Item>) => {
-        addItem(data);
-        onDone();
+    const onSubmit = async (data: Partial<Item>) => {
+        try {
+            await addItem(data);
+            onDone();
+        } catch {
+            // Do nothing, error will be displayed
+        }
     }
     const handleCancel = () => onDone();
     return (
         <>
-            {error && <p>{error}</p>}
+            {error && <Error>{error}</Error>}
             {loading && <p>Loading...</p>}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Title>Add a new item</Title>
