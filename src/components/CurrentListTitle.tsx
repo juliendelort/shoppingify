@@ -9,6 +9,7 @@ export interface CurrentListTitleProps {
 
 const Container = styled.div`
     display: flex;
+    padding-bottom: 24px;
 `;
 
 const Title = styled.h2`
@@ -18,7 +19,7 @@ const Title = styled.h2`
 
     font-style: normal;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 1.5rem;
     line-height: 30px;
     color: #34333A;
 `;

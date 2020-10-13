@@ -1,6 +1,7 @@
 import { Router, RouteComponentProps } from '@reach/router';
 import React from 'react';
 import styled from 'styled-components';
+import { ItemsProvider } from '../context/items';
 import Items from '../screens/Items';
 import { DESKTOP_LEFT_BAR_WIDTH, DESKTOP_RIGHT_BAR_WIDTH, ifMobile } from '../utils/styles';
 import Footer from './Footer';
@@ -33,6 +34,9 @@ const MainContent = styled.div`
   flex: 1;
 `;
 
+
+const ItemsWithData = (props: RouteComponentProps) => <ItemsProvider><Items /></ItemsProvider>;
+
 // Temporary
 const Lists = (props: RouteComponentProps) => <div>Lists</div>
 const Stats = (props: RouteComponentProps) => <div>Statistics</div>
@@ -42,7 +46,7 @@ const TabContent: React.FunctionComponent<TabContentProps> = ({ rightBarOpen }) 
         <Container rightBarOpen={rightBarOpen}>
             <MainContent>
                 <Router>
-                    <Items path='/' />
+                    <ItemsWithData path='/' />
                     <Lists path='history' />
                     <Stats path='stats' />
                 </Router>

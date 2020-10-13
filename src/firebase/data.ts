@@ -58,7 +58,7 @@ const listFromFirebase = async (l: DocumentSnapshot) => {
 }
 
 
-const useUserDataQuery = <T>(getQuery: () => Query, getDataFromSnapshot: (snapshot: Snapshot) => T[]) => {
+const useUserDataQuery = <T>(query: Query, getDataFromSnapshot: (snapshot: Snapshot) => T[]) => {
     const [data, setData] = React.useState<T[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
@@ -70,7 +70,7 @@ const useUserDataQuery = <T>(getQuery: () => Query, getDataFromSnapshot: (snapsh
         // Set loading for first fetch
         try {
             const setupListener = async () => {
-                getQuery()
+                query
                     .where('userid', '==', currentUser?.uid)
                     .onSnapshot(function (snapshot) {
                         try {
@@ -92,14 +92,15 @@ const useUserDataQuery = <T>(getQuery: () => Query, getDataFromSnapshot: (snapsh
             setError(error.message);
             setLoading(false);
         }
-    }, [currentUser, getQuery, getDataFromSnapshot]);
+    }, [currentUser, query, getDataFromSnapshot]);
 
     return { data, loading, error };
 }
 export const useItems = () => {
     // Must use useCallback here, otherwise we get a new reference everytime and useUserDataQuery would
     // subscribe for every render
-    const getQuery = React.useCallback(() => firestoreDB.collection('items')
+
+    const query = React.useMemo(() => firestoreDB.collection('items')
         .where('deleted', '==', false), []);
 
     const getDataFromSnapshot = React.useCallback((snapshot) => {
@@ -111,7 +112,7 @@ export const useItems = () => {
         return items;
     }, []);
 
-    const { data, loading, error } = useUserDataQuery<Item>(getQuery, getDataFromSnapshot);
+    const { data, loading, error } = useUserDataQuery<Item>(query, getDataFromSnapshot);
 
     return { items: data, loading, error };
 }
@@ -121,7 +122,7 @@ export const useCurrentList = () => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
 
-    const getQuery = React.useCallback(() => firestoreDB.collection('lists').where('status', 'in', ['editing', 'completing']), []);
+    const query = React.useMemo(() => firestoreDB.collection('lists').where('status', 'in', ['editing', 'completing']), []);
 
     const getDataFromSnapshot = React.useCallback((snapshot) => {
         const docs: DocumentSnapshot[] = [];
@@ -143,7 +144,7 @@ export const useCurrentList = () => {
         return [];
     }, []);
 
-    const { error: initialFetchError } = useUserDataQuery<List>(getQuery, getDataFromSnapshot);
+    const { error: initialFetchError } = useUserDataQuery<List>(query, getDataFromSnapshot);
 
     return { currentList: resolvedCurrentList, loading: loading, error: initialFetchError || error };
 }

@@ -57,7 +57,7 @@ const Logo = styled.img`
 const Count = styled.span`
     padding: 3px 7px;
     box-sizing: border-box;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: white;
     background: #EB5757;
     border-radius: 4px;
@@ -82,8 +82,8 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({ onToggleBar }) => {
                 <NavigationLink name='history' url='/history' imgsrc='replay-24px.svg' />
                 <NavigationLink name='statistics' url='/stats' imgsrc='insert_chart_outlined-24px.svg' />
             </LeftBarButtons>
-            <LogoCountWrapper>
-                <CartIcon src='shopping_cart-white-18dp.svg' alt='open list' onClick={onToggleBar} />
+            <LogoCountWrapper onClick={onToggleBar} >
+                <CartIcon src='shopping_cart-white-18dp.svg' alt='open list' />
                 {currentListCount > 0 && <Count>{currentListCount}</Count>}
             </LogoCountWrapper>
         </Container>

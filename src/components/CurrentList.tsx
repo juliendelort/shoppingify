@@ -2,6 +2,7 @@ import { groupBy, map } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
 import { useCurrentListState } from '../context/currentList';
+import CurrentListItem from './CurrentListItem';
 import CurrentListTitle from './CurrentListTitle';
 
 export interface CurrentListProps {
@@ -19,9 +20,19 @@ const Container = styled.div`
 const ItemList = styled.div`
     overflow: auto;
     flex: 1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 18px 10px;
     &::-webkit-scrollbar {
         display: none;
-      }
+    }
+
+    &::after{
+        content: "";
+        display: block;
+        height: 50px;
+        width: 100%;
+    }
 `;
 
 
@@ -34,25 +45,30 @@ const Error = styled.p`
 `;
 
 const CategoryTitle = styled.h3`
-    margin-top: 32px;
-    margin-bottom: 20px;
+    margin-top: 24px;
+    margin-bottom: 0;
 
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
+    font-size: 0.8rem;
 
     color: #828282;
+    grid-column: 1/-1;
 `;
 
-const ItemWrapper = styled.div`
-    margin-bottom: 34px;
-`;
+
+
 
 const CurrentList: React.FunctionComponent<CurrentListProps> = () => {
+    const [editingItemId, setEditingItemId] = React.useState<string | undefined>();
     const { currentList, loading, error } = useCurrentListState();
 
-    const itemsByCategory = groupBy(currentList?.items, (i) => i.item.category);
+    const itemsByCategory
+        = React.useMemo(() => groupBy(currentList?.items, (i) => i.item.category), [currentList]);
+
+    const handleEditClicked = React.useCallback((itemId: string) => {
+        setEditingItemId(itemId);
+    }, []);
 
     return (
         <Container>
@@ -65,7 +81,12 @@ const CurrentList: React.FunctionComponent<CurrentListProps> = () => {
                             <React.Fragment key={category}>
                                 <CategoryTitle >{category}</CategoryTitle>
                                 {map(items, ({ item, count }) => (
-                                    <ItemWrapper key={item.id}>{item.name} : {count}</ItemWrapper>
+                                    <CurrentListItem
+                                        key={item.id}
+                                        item={item}
+                                        count={count}
+                                        isEditing={editingItemId === item.id}
+                                        onEditClicked={handleEditClicked} />
                                 ))}
                             </React.Fragment>
                         ))}

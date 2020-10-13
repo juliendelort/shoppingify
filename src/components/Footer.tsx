@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 const FooterWrapper = styled.p`
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 50px;
   text-align: center;
 `;

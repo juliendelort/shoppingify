@@ -2,12 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { groupBy, map } from 'lodash';
 import { useAddToList, useItems } from '../firebase/data';
-import { RouteComponentProps } from '@reach/router';
 import { ifNotMobile, ifMobile, YELLOW } from '../utils/styles';
-import IconButton from '../components/IconButton';
 import { Item } from '../model/item';
 import Spinner from '../components/Spinner';
 import { useCurrentListState } from '../context/currentList';
+import AddIconButton from '../components/AddIconButton';
 
 const ItemScreen = styled.div`
     padding-left: 13px;
@@ -19,7 +18,7 @@ const ItemScreen = styled.div`
 `;
 
 const Title = styled.h1`
-    font-size: 26px;
+    font-size: 1.75rem;
     margin-top: 32px;
     ${ifMobile(`display: none;`)}
 `;
@@ -27,7 +26,7 @@ const Title = styled.h1`
 const SectionTitle = styled.span`
     margin-top: 20px;
     ${ifNotMobile(`margin-top: 30px;`)}
-    font-size: 18px;
+    font-size: 1.25rem;
     grid-column: 1 / -1;
 `;
 
@@ -57,12 +56,6 @@ const ItemName = styled.span`
     text-overflow: ellipsis;
 `;
 
-const GrayIconButton = styled(IconButton)`
-    opacity: 0.3;
-    width: 16px;
-    height: 16px;
-`;
-
 const Loading = styled.p`
     text-align: center;
     margin-top: 40px;
@@ -80,13 +73,15 @@ const StyledSpinner = styled(Spinner)`
 `;
 
 
-const Items: React.FunctionComponent<RouteComponentProps> = () => {
+const Items: React.FunctionComponent = () => {
     const { items, loading: fetchingItems, error: fetchItemsError } = useItems();
     const { addToList, itemBeingAdded, error: addItemError } = useAddToList();
     const { currentList } = useCurrentListState();
 
-    const itemsByCategory = groupBy(items, ((i: Item) => i.category));
-    const handleAddClicked = (itemId: string) => () => currentList?.id && addToList(currentList.id, itemId);
+    const itemsByCategory = React.useMemo(() => groupBy(items, ((i: Item) => i.category)), [items]);
+    const handleAddClicked = React.useCallback(
+        (itemId: string) => currentList?.id && addToList(currentList.id, itemId),
+        [currentList, addToList]);
 
     return (
         <ItemScreen>
@@ -105,7 +100,7 @@ const Items: React.FunctionComponent<RouteComponentProps> = () => {
                                 <ItemElem key={item.id}>
                                     <ItemName>{item.name}</ItemName>
                                     {itemBeingAdded === item.id ? <StyledSpinner /> : (
-                                        <GrayIconButton src='add-24px.svg' alt='Add' onClick={handleAddClicked(item.id)} />
+                                        <AddIconButton itemId={item.id} onClick={handleAddClicked} />
                                     )}
                                 </ItemElem>))}
 
