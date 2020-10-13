@@ -6,3 +6,4 @@ service cloud.firestore {
       	request.auth.uid == resource.data.userid || request.auth.uid == request.resource.data.userid)
     }
   }
+}
