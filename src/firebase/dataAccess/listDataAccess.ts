@@ -76,5 +76,66 @@ export const useAddToList = () => {
     };
 
     return { addToList, itemBeingAdded, error };
+}
 
+/**
+ * Hook to decrement an item count on a list
+ * @returns object {
+ *    decrementFromList: function (listId, itemId): calls backend and decrements item <itemId> to list <listId>
+ *    itemBeingDecremented: If backend call in progress, itemId of item being decremented. null if no backend 
+ *                    call in progress
+ *    error: null if no error, or error description (string)
+ * }
+ */
+export const useDecrementFromList = () => {
+    const [itemBeingDecremented, setItemBeingDecremented] = React.useState<string | null>(null);
+    const [error, setError] = React.useState<string | null>(null);
+
+    const decrementFromList = async (listId: string, itemId: string) => {
+        setItemBeingDecremented(itemId);
+        setError(null);
+        try {
+            await firestoreDB.collection('lists').doc(listId).update({
+                [`items.${itemId}.count`]: firebase.firestore.FieldValue.increment(-1)
+            });
+        } catch (e) {
+            const error = e as Firebase.FirebaseError;
+            setError(error.message);
+        } finally {
+            setItemBeingDecremented(null);
+        }
+    };
+
+    return { decrementFromList, itemBeingDecremented, error };
+}
+
+/**
+ * Hook to remove an item  from a list
+ * @returns object {
+ *    removeFromList: function (listId, itemId): calls backend and removes item <itemId> from list <listId>
+ *    itemBeingRemoved: If backend call in progress, itemId of item being removed. null if no backend 
+ *                    call in progress
+ *    error: null if no error, or error description (string)
+ * }
+ */
+export const useRemoveFromList = () => {
+    const [itemBeingRemoved, setItemBeingRemoved] = React.useState<string | null>(null);
+    const [error, setError] = React.useState<string | null>(null);
+
+    const removeFromList = async (listId: string, itemId: string) => {
+        setItemBeingRemoved(itemId);
+        setError(null);
+        try {
+            await firestoreDB.collection('lists').doc(listId).update({
+                [`items.${itemId}`]: firebase.firestore.FieldValue.delete()
+            });
+        } catch (e) {
+            const error = e as Firebase.FirebaseError;
+            setError(error.message);
+        } finally {
+            setItemBeingRemoved(null);
+        }
+    };
+
+    return { removeFromList, itemBeingRemoved, error };
 }

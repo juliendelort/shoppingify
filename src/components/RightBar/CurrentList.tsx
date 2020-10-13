@@ -1,4 +1,4 @@
-import { groupBy, map } from 'lodash';
+import { forEach, groupBy, keys, map, sortBy } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
 import { useCurrentListState } from '../../context/currentList';
@@ -57,18 +57,25 @@ const CategoryTitle = styled.h3`
 `;
 
 
-
-
 const CurrentList: React.FunctionComponent<CurrentListProps> = () => {
     const [editingItemId, setEditingItemId] = React.useState<string | undefined>();
     const { currentList, loading, error } = useCurrentListState();
 
-    const itemsByCategory
-        = React.useMemo(() => groupBy(currentList?.items, (i) => i.item.category), [currentList]);
+    // Group items by category and sort them by name within each category
+    const itemsByCategory = React.useMemo(() => {
+        const result = groupBy(currentList?.items, (i) => i.item.category);
+        forEach(keys(result), (category) => {
+            result[category] = sortBy(result[category], ({ item, count }) => item.name)
+        })
+        return result;
+    }, [currentList]);
+
+    // Displaying categories in alphabetical order
+    const categories = React.useMemo(() => keys(itemsByCategory).sort(), [itemsByCategory]);
 
     const handleEditClicked = React.useCallback((itemId: string) => {
         setEditingItemId(itemId);
-    }, []);
+    }, [setEditingItemId]);
 
     return (
         <Container>
@@ -77,17 +84,19 @@ const CurrentList: React.FunctionComponent<CurrentListProps> = () => {
                 <>
                     <CurrentListTitle />
                     <ItemList>
-                        {map(itemsByCategory, (items, category) => (
+                        {map(categories, (category) => (
                             <React.Fragment key={category}>
-                                <CategoryTitle >{category}</CategoryTitle>
-                                {map(items, ({ item, count }) => (
+                                <CategoryTitle>{category}</CategoryTitle>
+                                {map(itemsByCategory[category], ({ item, count }) => (
                                     <CurrentListItem
                                         key={item.id}
                                         item={item}
                                         count={count}
                                         isEditing={editingItemId === item.id}
+                                        currentListId={currentList?.id}
                                         onEditClicked={handleEditClicked} />
                                 ))}
+
                             </React.Fragment>
                         ))}
                     </ItemList>
