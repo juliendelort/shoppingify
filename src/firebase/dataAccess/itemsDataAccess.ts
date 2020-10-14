@@ -57,6 +57,8 @@ export const useAddItem = () => {
                 userid: currentUser?.id,
                 deleted: false
             });
+
+
         } catch (e) {
             const error = e as Firebase.FirebaseError;
             setError(error.message);

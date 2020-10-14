@@ -19,7 +19,6 @@ const Container = styled.div`
 
 const ItemList = styled.div`
     overflow: auto;
-    flex: 1;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-gap: 18px 10px;

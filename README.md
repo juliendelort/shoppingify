@@ -1,6 +1,6 @@
 <div align="center">
 
-Solution for [Shoppingify dev challenge](https://devchallenges.io/challenges/mGd5VpbO4JnzU6I9l96x)
+[Work in progress] Solution for [Shoppingify dev challenge](https://devchallenges.io/challenges/mGd5VpbO4JnzU6I9l96x)
 
 Created by **Julien Delort** (<a href="https://www.linkedin.com/in/juliendelort/" target="_blank">Linkedin</a>)
 

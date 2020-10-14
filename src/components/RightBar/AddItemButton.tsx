@@ -33,7 +33,6 @@ const Button = styled.button`
     border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-family: 'Quicksand', sans-serif;
 `;
 
 const Text = styled.p`
