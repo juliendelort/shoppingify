@@ -31,15 +31,15 @@ const LoginPage = styled.div`
 `;
 
 const MainScreen: React.FunctionComponent<MainScreenProps> = () => {
-    const { currentUser } = useCurrentUserState();
+    const { currentUser, loading: currentUserLoading } = useCurrentUserState();
     const [rightBarOpen, setRightBarOpen] = React.useState(false);
 
     const handleToggleBar = React.useCallback(() => {
         setRightBarOpen(open => !open);
     }, [setRightBarOpen]);
 
-
-    if (!currentUser) {
+    console.log({ currentUser, currentUserLoading });
+    if (currentUserLoading) {
         return (
             <Loading>Loading...</Loading>
         );

@@ -3,11 +3,13 @@ import { useCurrentUser } from '../firebase/dataAccess/userDataAccess';
 import { User } from '../model/user';
 
 export interface CurrentUserState {
-    currentUser?: User | null
+    currentUser?: User | null,
+    loading: boolean;
 };
 
 const initialState: CurrentUserState = {
-    currentUser: null
+    currentUser: null,
+    loading: true
 };
 
 const CurrentUserContext = React.createContext<CurrentUserState>(initialState);
