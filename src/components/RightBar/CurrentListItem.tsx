@@ -72,7 +72,7 @@ const CurrentListItem: React.FunctionComponent<CurrentListItemProps> = ({ curren
     }, [onEditClicked, item.id]);
 
     const handlePlusClicked = React.useCallback(() => {
-        currentListId && addToList(currentListId, item.id);
+        addToList(item.id, currentListId);
     }, [currentListId, item.id, addToList]);
 
     const handleMinusClicked = React.useCallback(() => {

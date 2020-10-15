@@ -2,6 +2,7 @@ import { reduce } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
 import { useCurrentListState } from '../../context/currentList';
+import { signOut } from '../../firebase/dataAccess/authDataAccess';
 import { DESKTOP_LEFT_BAR_WIDTH, ifNotMobile, MOBILE_LEFT_BAR_WIDTH, YELLOW } from '../../utils/styles';
 import NavigationLink from './NavigationLink';
 
@@ -68,11 +69,23 @@ const Count = styled.span`
     transform: translate(25%, -25%);
 `;
 
+const Logout = styled.button`
+    position: absolute;
+    bottom: 5px;
+    font-size: 0.75rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+`;
+
 const LeftBar: React.FunctionComponent<LeftBarProps> = ({ onToggleBar }) => {
     const { currentList } = useCurrentListState();
     const currentListCount = reduce(currentList?.items, (count, value, key) => {
         return count + value.count;
     }, 0);
+
+    const handleLogoutClicked = () => signOut();
 
     return (
         <Container>
@@ -86,6 +99,7 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({ onToggleBar }) => {
                 <CartIcon src='shopping_cart-white-18dp.svg' alt='open list' />
                 {currentListCount > 0 && <Count>{currentListCount}</Count>}
             </LogoCountWrapper>
+            <Logout onClick={handleLogoutClicked}>logout</Logout>
         </Container>
     );
 };

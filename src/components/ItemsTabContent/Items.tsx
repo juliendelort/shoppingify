@@ -82,7 +82,7 @@ const Items: React.FunctionComponent = () => {
 
     const itemsByCategory = React.useMemo(() => groupBy(items, ((i: Item) => i.category)), [items]);
     const handleAddClicked = React.useCallback(
-        (itemId: string) => currentList?.id && addToList(currentList.id, itemId),
+        (itemId: string) => addToList(itemId, currentList?.id),
         [currentList, addToList]);
 
     return (

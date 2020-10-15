@@ -22,8 +22,9 @@ export const useUserDataQuery = <T>(query: Query, getDataFromSnapshot: (snapshot
     React.useEffect(() => {
         // Set loading for first fetch
         try {
-            const setupListener = async () => {
-                query
+
+            const setupListener = () => {
+                return query
                     .where('userid', '==', currentUser?.id)
                     .onSnapshot(function (snapshot) {
                         try {
@@ -37,7 +38,8 @@ export const useUserDataQuery = <T>(query: Query, getDataFromSnapshot: (snapshot
                     });
             };
             if (currentUser) {
-                setupListener();
+                const unsubscribe = setupListener();
+                return () => unsubscribe();
 
             }
         } catch (e) {

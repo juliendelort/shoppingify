@@ -5,6 +5,7 @@ import { firestoreDB } from '../firebase';
 import { listFromFirebase } from '../transformer/listTransformer';
 import { DocumentSnapshot, useUserDataQuery } from './tools';
 import Firebase from 'firebase/app';
+import { useCurrentUserState } from '../../context/currentUser';
 
 /**
  * Hooks to fetch the current (active) shopping list. This listens and gets notified when resul have changed
@@ -36,6 +37,8 @@ export const useCurrentList = () => {
                     setError(error.message);
                 })
                 .finally(() => setLoading(false))
+        } else {
+            setLoading(false);
         }
         // Not used
         return [];
@@ -49,7 +52,8 @@ export const useCurrentList = () => {
 /**
  * Hook to add an Item to a List in the backend
  * @returns object {
- *    addToList: function (listId, itemId): calls backend and adds item <itemId> to list <listId>
+ *    addToList: function (itemId, listId): calls backend and adds item <itemId> to list <listId>.
+ *                                          If listId is null, create a new list
  *    itemBeingAdded: If backend call in progress, itemId of item being added. null if no backend 
  *                    call in progress
  *    error: null if no error, or error description (string)
@@ -58,15 +62,31 @@ export const useCurrentList = () => {
 export const useAddToList = () => {
     const [itemBeingAdded, setItemBeingAdded] = React.useState<string | null>(null);
     const [error, setError] = React.useState<string | null>(null);
+    const { currentUser } = useCurrentUserState();
 
-    const addToList = async (listId: string, itemId: string) => {
+    const addToList = async (itemId: string, listId?: string) => {
         setItemBeingAdded(itemId);
         setError(null);
         try {
-            await firestoreDB.collection('lists').doc(listId).update({
-                [`items.${itemId}.item`]: firestoreDB.collection('items').doc(itemId),
-                [`items.${itemId}.count`]: firebase.firestore.FieldValue.increment(1)
-            });
+            if (listId) {
+                await firestoreDB.collection('lists').doc(listId).update({
+                    [`items.${itemId}.item`]: firestoreDB.collection('items').doc(itemId),
+                    [`items.${itemId}.count`]: firebase.firestore.FieldValue.increment(1)
+                });
+            } else {
+                // No current list, create one in editing mode with item
+                await firestoreDB.collection('lists').add({
+                    items: {
+                        [itemId]: {
+                            item: firestoreDB.collection('items').doc(itemId),
+                            count: 1
+                        }
+                    },
+                    status: 'editing',
+                    userid: currentUser?.id
+                });
+            }
+
         } catch (e) {
             const error = e as Firebase.FirebaseError;
             setError(error.message);

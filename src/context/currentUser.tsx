@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCurrentUser } from '../firebase/dataAccess/userDataAccess';
+import { useCurrentUser } from '../firebase/dataAccess/authDataAccess';
 import { User } from '../model/user';
 
 export interface CurrentUserState {
