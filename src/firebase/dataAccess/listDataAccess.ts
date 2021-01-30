@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import { List } from '../../model/list';
+import { List, ListStatus } from '../../model/list';
 import { firestoreDB } from '../firebase';
 import { listFromFirebase } from '../transformer/listTransformer';
 import { DocumentSnapshot, useUserDataQuery } from './tools';
@@ -158,4 +158,27 @@ export const useRemoveFromList = () => {
     };
 
     return { removeFromList, itemBeingRemoved, error };
+}
+
+export const useSetListStatus = () => {
+    const [listBeingModified, setListBeingModified] = React.useState<string | null>(null);
+    const [error, setError] = React.useState<string | null>(null);
+
+    const setListStatus = async (listId: string, status: ListStatus) => {
+        setListBeingModified(listId);
+        setError(null);
+        try {
+            await firestoreDB.collection('lists').doc(listId).update({
+                status
+            });
+
+        } catch (e) {
+            const error = e as Firebase.FirebaseError;
+            setError(error.message);
+        } finally {
+            setListBeingModified(null);
+        }
+    };
+
+    return { setListStatus, listBeingModified, error };
 }
