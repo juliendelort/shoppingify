@@ -43,7 +43,6 @@ const CartIcon = styled.img`
     border-radius: 100%;
     padding: 11px;
     box-sizing: border-box;
-    position
 `;
 
 const LogoCountWrapper = styled.div`

@@ -38,7 +38,6 @@ const MainScreen: React.FunctionComponent<MainScreenProps> = () => {
         setRightBarOpen(open => !open);
     }, [setRightBarOpen]);
 
-    console.log({ currentUser, currentUserLoading });
     if (currentUserLoading) {
         return (
             <Loading>Loading...</Loading>
