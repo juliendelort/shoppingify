@@ -10,6 +10,8 @@ Live demo: https://shoppingify-bbf33.web.app/
 User stories and mocks available on [the dev challenge page](https://devchallenges.io/challenges/mGd5VpbO4JnzU6I9l96x)
 </div>
 
+Note: This runs on node 16.
+
 
 ## Stack
 
@@ -37,6 +39,14 @@ User stories and mocks available on [the dev challenge page](https://devchalleng
 *  `public/`: static resources 
 
 Local state is managed inside `context/` through [custom hooks](https://reactjs.org/docs/hooks-custom.html#extracting-a-custom-hook).
+
+## Deploying new versions
+
+1. Install firebase cli: `npm install -g firebase-tools`
+1. Login to firebase: `firebase login`
+1. Build the app: `npm run build`
+1. Deploy: `firebase deploy --only hosting` (--only hosting if only changes in the React code)
+
 
 ## Available Scripts
 
