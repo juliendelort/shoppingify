@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { useCurrentListState } from '../../context/currentList';
 import { signOut } from '../../firebase/dataAccess/authDataAccess';
 import { DESKTOP_LEFT_BAR_WIDTH, ifNotMobile, MOBILE_LEFT_BAR_WIDTH, YELLOW } from '../../utils/styles';
-import NavigationLink from './NavigationLink';
 
 export interface LeftBarProps {
     onToggleBar: () => void;
@@ -89,11 +88,11 @@ const LeftBar: React.FunctionComponent<LeftBarProps> = ({ onToggleBar }) => {
     return (
         <Container>
             <Logo src='logo.svg' />
-            <LeftBarButtons>
+            {/* <LeftBarButtons>
                 <NavigationLink name='items' url='/' imgsrc='format_list_bulleted-24px.svg' />
                 <NavigationLink name='history' url='/history' imgsrc='replay-24px.svg' />
                 <NavigationLink name='statistics' url='/stats' imgsrc='insert_chart_outlined-24px.svg' />
-            </LeftBarButtons>
+            </LeftBarButtons> */}
             <LogoCountWrapper onClick={onToggleBar} >
                 <CartIcon src='shopping_cart-white-18dp.svg' alt='open list' />
                 {currentListCount > 0 && <Count>{currentListCount}</Count>}
